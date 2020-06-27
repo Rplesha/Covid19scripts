@@ -26,7 +26,7 @@ def cases_per_million(statesdata,statepops):
 
     for i,statename in enumerate(statesdata[plotstates]):
 
-        data = statesdata.loc[lambda df:capita*df[statename]/statepops.loc[statename].values>N_min,statename] 
+        data = statesdata.loc[lambda df:capita*df[statename]/statepops.loc[statename].values>N_min,statename]
         data = capita*data/statepops.loc[statename].values
 
         if data.empty:
@@ -56,7 +56,7 @@ def cases_per_million_by_date(statesdata,statepops):
 
     for i,statename in enumerate(statesdata[plotstates]):
 
-        data = statesdata.loc[lambda df:capita*df[statename]/statepops.loc[statename].values>N_min,statename] 
+        data = statesdata.loc[lambda df:capita*df[statename]/statepops.loc[statename].values>N_min,statename]
         data = capita*data/statepops.loc[statename].values
 
         if data.empty:
@@ -99,7 +99,7 @@ def cases_by_date(statesdata):
 
 def getdata():
 
-    filename = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
+    filename = '../COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
     a = pd.read_csv(filename,index_col='UID')
     a.drop(columns=['iso2','iso3','code3','FIPS','Admin2','Country_Region','Lat','Long_','Combined_Key'],inplace=True)
 
@@ -123,8 +123,8 @@ def updateplots():
     cases_per_million_by_date(statesdata,statepops)
 
 
-    return 
-    
+    return
+
 
 
 if __name__ == '__main__':

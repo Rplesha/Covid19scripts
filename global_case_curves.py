@@ -9,7 +9,7 @@ matplotlib.style.use('dark_background')
 
 def getdata():
 
-    filename = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+    filename = '../COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
     a = pd.read_csv(filename)
 
     b = a.groupby('Country/Region').sum()
@@ -59,7 +59,7 @@ def grid_plot(data):
         ax[i].plot(dailydata[countrieslist[i]].rolling(5,center=True,min_periods=2).mean(),
                    c='gold',lw=1.25)
         ax[i].set_ylim(bottom=0)
-        
+
         ax[i].xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
         plt.gcf().autofmt_xdate(rotation=70)
 
@@ -94,7 +94,7 @@ def latin_america(data):
         ax[i].plot(dailydata[countrieslist[i]].rolling(5,center=True,min_periods=2).mean(),
                    c='gold',lw=1.25)
         ax[i].set_ylim(bottom=0)
-        
+
         ax[i].xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
         plt.gcf().autofmt_xdate(rotation=70)
 
@@ -131,7 +131,7 @@ def eu_vs_usa_plot(data):
                c='gold',lw=1.5)
     ax[1].set_ylim(bottom=0)
     ax[1].text(0.05,0.8,'European Union',fontsize='large',transform=ax[1].transAxes)
-    
+
     ax[1].xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
     plt.gcf().autofmt_xdate(rotation=70)
 

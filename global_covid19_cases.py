@@ -32,8 +32,8 @@ def cases_since_first_case(countriesdata):
     plt.figure(figsize=figsize,num='cases_since_first_case')
 
     for i,country in enumerate(countriesdata.columns):
-        
-        data = countriesdata.loc[lambda df:df[country]>N_min,country]  
+
+        data = countriesdata.loc[lambda df:df[country]>N_min,country]
 
         if data.empty:
 
@@ -64,7 +64,7 @@ def cases_per_million(countriesdata):
 
     for i,country in enumerate(countriesdata.columns):
 
-        data = countriesdata.loc[lambda df:capita*df[country]/countriespop[country]>N_min,country] 
+        data = countriesdata.loc[lambda df:capita*df[country]/countriespop[country]>N_min,country]
         data = capita*data/countriespop[country]
 
         if data.empty:
@@ -94,7 +94,7 @@ def cases_per_million_by_date(countriesdata):
 
     for i,country in enumerate(countriesdata.columns):
 
-        data = countriesdata.loc[lambda df:capita*df[country]/countriespop[country]>N_min,country] 
+        data = countriesdata.loc[lambda df:capita*df[country]/countriespop[country]>N_min,country]
         data = capita*data/countriespop[country]
 
         if data.empty:
@@ -122,7 +122,7 @@ def cases_by_date(countriesdata):
     for i,countryname in enumerate(countriesdata.columns):
 
         data = countriesdata[countryname]
-    
+
         label = f'{countryname}: {countriesdata[countryname].values[-1]:8,d}'
         plt.plot(countriesdata[countryname],
                  label=label,
@@ -145,7 +145,7 @@ def updateplots():
 
     #initialization stuff
 
-    filename = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+    filename = '../COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
     a = pd.read_csv(filename)
     b = a.groupby('Country/Region').sum()
     b.drop(columns=['Lat','Long'],inplace=True)
@@ -157,7 +157,7 @@ def updateplots():
 
     #calls to plot makers
     cases_by_date(countriesdata)
-    #cases_since_first_case(countriesdata) 
+    #cases_since_first_case(countriesdata)
     cases_per_million(countriesdata)
     cases_per_million_by_date(countriesdata)
 
