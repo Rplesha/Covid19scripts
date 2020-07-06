@@ -16,10 +16,10 @@ def download_data(region, deaths=False, url=JHU_URL, outdir="data"):
             filename = "time_series_covid19_deaths_US.csv"
         else:
             filename = "time_series_covid19_confirmed_US.csv"
-   
+
     if not os.path.exists(outdir):
         os.mkdir(outdir)
-    
+
     outfilename = os.path.join(outdir, filename)
     if os.path.exists(outfilename):
         filetime = os.path.getmtime(outfilename)
@@ -43,8 +43,8 @@ def read_data(filename, region):
         statepops = None
     else:
         a = pd.read_csv(filename, index_col='UID')
-        a.drop(columns=['iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 
-                    'Country_Region','Lat','Long_','Combined_Key'], 
+        a.drop(columns=['iso2', 'iso3', 'code3', 'FIPS', 'Admin2',
+                    'Country_Region','Lat','Long_','Combined_Key'],
                     inplace=True)
         b = a.groupby('Province_State').sum()
         statepops0 = pd.read_csv('nst-est2019-01.csv',index_col='State')

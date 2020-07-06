@@ -13,8 +13,8 @@ matplotlib.use('agg')
 matplotlib.style.use('ggplot')
 plt.rcParams['ytick.right'] = plt.rcParams['ytick.labelright'] = True
 
-SUBSET_STATES = ['Arkansas','California','Indiana','Maryland','New Jersey',
-                 'New York','Ohio','Texas','Washington']
+SUBSET_STATES = ['Arizona', 'California','Colorado', 'Florida', 'Maryland',
+                 'Montana', 'New Jersey', 'New York', 'Washington']
 SUBSET_COUNTIRES = ['China','El Salvador','Iran','Italy','Japan',
                     'Korea, South','Spain','Taiwan*','US']
 N_MIN = 100
@@ -35,10 +35,10 @@ def overlaid_plots(region, all_data, pops, region_subset=None, outdir="plots",
     else:
         capita = 100000
         region_subset = SUBSET_STATES
-   
+
     clist = plt.cm.tab20(np.linspace(0, 1, len(region_subset)))
     data_subset = all_data[region_subset]
-    data_subset_capita = capita * data_subset.div(pops[region_subset].iloc[0], 
+    data_subset_capita = capita * data_subset.div(pops[region_subset].iloc[0],
                                           axis="columns")
 
     for log in [False, True]:
@@ -85,10 +85,10 @@ def overlaid_plots(region, all_data, pops, region_subset=None, outdir="plots",
         for i,statenation in enumerate(region_subset):
             data_subset_date = data_subset.loc[lambda df: df[statenation] > N_MIN, statenation]
             data_subset_capita_date = capita * data_subset_date.div(pops[statenation].iloc[0])
-            ax1.plot(data_subset_date.values, label=statenation, 
-                     marker="o", ms=5, c=clist[i]) 
+            ax1.plot(data_subset_date.values, label=statenation,
+                     marker="o", ms=5, c=clist[i])
             ax2.plot(data_subset_capita_date.values, label=statenation,
-                     marker="o", ms=5, c=clist[i]) 
+                     marker="o", ms=5, c=clist[i])
         if log is True:
             ax.set_ylim(bottom=100)
             ax1.semilogy()

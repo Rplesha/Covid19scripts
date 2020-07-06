@@ -27,7 +27,7 @@ STATES = ['Alabama','Alaska','Arizona','Arkansas','California',
           'Texas','Utah','Vermont','Virginia','Washington',
           'West Virginia','Wisconsin','Wyoming']
 
-ALL_COUNTRIES = ['Brazil','Costa Rica','El Salvador','Germany','Iran',
+ALL_COUNTRIES = ['Brazil','Costa Rica','El Salvador','Germany','Iran', 'Canada',
                  'Italy','Korea, South','Mexico','Russia','Spain','Sweden','US']
 
 EU_COUNTRIES = ['Austria','Belgium','Bulgaria','Croatia','Cyprus','Czechia',
@@ -41,7 +41,7 @@ LATIN_COUNTRIES = ['Mexico','Guatemala','Belize','El Salvador','Honduras',
                    'Ecuador','Peru','Brazil','Bolivia','Paraguay','Uruguay',
                    'Argentina','Chile','Cuba','Dominican Republic']
 
-def grid_plot(data, region, outdir="plots", eu_vs_usa=True, deaths=False):
+def grid_plot(data, pops, region, outdir="plots", eu_vs_usa=True, deaths=False, normalize=False):
     if not os.path.exists(outdir):
         os.mkdir(outdir)
 
@@ -85,6 +85,16 @@ def grid_plot(data, region, outdir="plots", eu_vs_usa=True, deaths=False):
                              sharex=True)
     plt.subplots_adjust(wspace=0.3)
 
+    if normalize == True:
+        capita = 100000
+        for key in data.keys():
+            try:
+                data[key] = (data[key]/pops[key][0]) * capita
+            except KeyError:
+                continue
+            except TypeError:
+                break
+
     dailydata = data.diff()
 
     for i,ax in enumerate(axes.flatten()):
@@ -94,14 +104,18 @@ def grid_plot(data, region, outdir="plots", eu_vs_usa=True, deaths=False):
                                               center=True,
                                               min_periods=2).mean(),
                 c=contrast, lw=lw)
-        ax.set_ylim(bottom=0)
-        
+
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
         plt.gcf().autofmt_xdate(rotation=70)
 
         ax.tick_params('both', labelsize=labelsize)
-        ax.text(0.025, 0.8, statenations[i], fontsize=fontsize, 
+        ax.text(0.025, 0.8, statenations[i], fontsize=fontsize,
                 transform=ax.transAxes)
+        if normalize == True:
+            ax.set_ylim(0, 60)
+        else:
+            ax.set_ylim(bottom=0)
+
 
     plt.suptitle(f'New daily {lbl}\n{dailydata.index[-1]:%B %d, %Y}',
                  fontsize='large')
@@ -114,9 +128,12 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--deaths", action="store_true",
                         default=False,
                         help="Switch to plot deaths instead of cases")
+    parser.add_argument("-n", "--normalize", action="store_true",
+                        default=False,
+                        help="Switch to have axes by 100,000")
     args = parser.parse_args()
-    
+
     regions = ["world", "usa", "latin", "eu_vs_usa"]
     for item in regions:
         data, pops = get_data.get_data(item, deaths=args.deaths)
-        grid_plot(data, item, deaths=args.deaths)
+        grid_plot(data, pops, item, deaths=args.deaths, normalize=args.normalize)
